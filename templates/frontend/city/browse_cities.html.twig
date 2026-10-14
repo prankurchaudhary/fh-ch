@@ -1,0 +1,153 @@
+{% extends "frontend/base.html.twig" %}
+
+{% block title %}
+City List | Xtreme Foodies - The world's Essential Eats curated by local food experts
+{% endblock %}
+
+{% block cssblock %}
+
+{% endblock %}
+
+{% block body %}
+
+<section class="py-5">
+
+    <div class="container">
+        <div class="page-header">
+        <h1>Explore Cities</h1>
+        <p>Discover amazing restaurants around the world</p>
+        </div>
+
+        {# <div class="text-center mb-4">
+            <h2 class="section-title">CITIES</h2>
+            <hr class="w-25 mx-auto">
+            
+        </div> #}
+
+        <div class="popular-cities text-center">
+        <div class="section-title">🔥 Popular Cities</div>
+
+        <a href="#" class="popular-city">London</a>
+        <a href="#" class="popular-city">Paris</a>
+        <a href="#" class="popular-city">New York</a>
+        <a href="#" class="popular-city">Tokyo</a>
+        <a href="#" class="popular-city">Dubai</a>
+        <a href="#" class="popular-city">Singapore</a>
+    </div>
+
+        <div class="accordion" id="continentAccordion">
+
+            {% for continent, countries in tree %}
+
+                <div class="accordion-item continent-card city-search-item">
+
+                    <h2 class="accordion-header">
+
+                        <button
+                            class="accordion-button collapsed"
+                            type="button"
+                            data-bs-toggle="collapse"
+                            data-bs-target="#continent-{{ loop.index }}"
+                        >
+                            🌍 {{ continent }}
+                        </button>
+
+                    </h2>
+
+                    <div
+                        id="continent-{{ loop.index }}"
+                        class="accordion-collapse collapse"
+                        
+                    >
+
+                        <div class="accordion-body">
+
+                            <div style="width:100%;" class=""
+                                 id="countryAccordion-{{ loop.index }}">
+
+                                {% for country, cities in countries %}
+
+                                    <div class="accordion-item country-card">
+
+                                        <h2 class="accordion-header">
+
+                                            <button
+                                                class="accordion-button collapsed"
+                                                type="button"
+                                                data-bs-toggle="collapse"
+                                                data-bs-target="#country-{{ loop.parent.loop.index }}-{{ loop.index }}"
+                                            >
+                                                🌐 {{ country }} ( {{ cities|length }} Cities )
+                                                {# <span class="ms-auto me-3 text-muted small">
+                                                    {{ cities|length }} Cities
+                                                </span> #}
+                                            </button>
+
+                                        </h2>
+
+                                        <div
+                                            id="country-{{ loop.parent.loop.index }}-{{ loop.index }}"
+                                            class="accordion-collapse collapse"
+                                            data-bs-parent="#countryAccordion-{{ loop.parent.loop.index }}"
+                                        >
+
+                                            <div class="accordion-body">
+
+                                                <div class="row g-3 city-grid">
+
+                                                    {% for city in cities %}
+
+                                                        <div class="col-lg-3 col-md-4 col-sm-6 city-search-item">
+
+                                                            <a
+                                                                href="{{ path('city_page', {
+                                                                    continentSlug: city.continent.slug,
+                                                                    citySlug: city.slug
+                                                                }) }}"
+                                                                class="acc-city-card"
+                                                            >
+
+                                                                <span class="city-name">
+                                                                    {# <i class="bi bi-geo-alt-fill me-1"></i> #}
+                                                                    {{ city.name }} 
+                                                                </span>
+
+                                                                <span class="city-meta">
+                                                                    {{ city.restaurants|length }} Restaurants
+                                                                </span>
+
+                                                            </a>
+
+                                                        </div>
+
+                                                    {% endfor %}
+
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+
+                                {% endfor %}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+{% endblock %}

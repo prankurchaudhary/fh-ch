@@ -1,0 +1,118 @@
+{% extends "frontend/base.html.twig" %}
+{% block title %}User account | Xtreme Foodies - The world's Essential Eats curated by local food experts{% endblock %}
+{% block cssblock %}
+
+
+{% endblock %}
+{% block body %}
+<div class="container">
+
+<div class="signup-wrapper mt-5 mb-5 row g-0">
+
+    <!-- Left: Brand / Story -->
+    <div class="col-md-5 d-none d-md-flex">
+      <div class="signup-brand w-100">
+        <h1>Chowzter</h1>
+        <p>
+          Discover the best restaurants, experts, and food stories across cities.
+          Create an account to personalise your food journey.
+        </p>
+
+        <ul>
+          <li>🍽 Curated restaurants & reviews</li>
+          <li>👨‍🍳 Expert food recommendations</li>
+          <li>📍 City‑wise discoveries</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Right: Form -->
+    <div class="col-md-7">
+      <div class="signup-form">
+        <h2>Create your account</h2>
+        <div class="subtitle">Join Chowzter in less than a minute</div>
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+        {% endfor %}
+
+        {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">{{ message }}</div>
+        {% endfor %}
+        <form method="POST" action="{{ path('frontend_register') }}">
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" value="{{ app.request.get('email') }}">
+            {% if errors.email is defined %}
+            <div class="text-danger">{{ errors.email }}</div>
+            {% endif %}            
+          </div>
+
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label class="form-label">First Name</label>
+              <input type="text" name="firstName" class="form-control" placeholder="Enter first name" value="{{ app.request.get('firstName') }}">
+                {% if errors.firstName is defined %}
+                <div class="text-danger">{{ errors.firstName }}</div>
+                {% endif %}
+              
+            </div>
+            <div class="col-md-6 mb-3">
+              <label class="form-label">Last Name</label>
+              <input type="text" name="lastName" class="form-control" placeholder="Enter last name" value="{{ app.request.get('lastName') }}">
+                {% if errors.lastName is defined %}
+                <div class="text-danger">{{ errors.lastName }}</div>
+                {% endif %}
+              
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">City</label>
+            <select name="city" class="form-control">
+                <option selected disabled>-- Select City --</option>
+                {% for city in cities %}
+                <option value="{{ city.id }}" {% if app.request.get('city')==city.id %}selected{% endif %}>
+                    {{ city.name }}
+                </option>
+                {% endfor %}
+            </select>
+            {% if errors.city is defined %}
+            <div class="text-danger">{{ errors.city }}</div>
+            {% endif %}
+            
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input name="password" type="password" placeholder="••••••••" class="form-control">
+            {% if errors.password is defined %}
+            <div class="text-danger">{{ errors.password }}</div>
+            {% endif %}
+            
+          </div>
+
+          <div class="form-check mb-4">
+            <input class="form-check-input" name="newsletter" type="checkbox" id="newsletterCheck">
+            <label class="form-check-label" for="newsletterCheck">
+              Subscribe to Chowzter newsletter
+            </label>
+             
+          </div>
+
+          <div class="d-grid">
+            <button type="submit" class="btn btn-register text-white">Register</button>
+          </div>
+
+          <div class="login-link">
+            Already have an account? <a href="#">Login</a>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+{% endblock %}

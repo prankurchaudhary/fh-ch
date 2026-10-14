@@ -1,0 +1,134 @@
+<header class="chow-header">
+    <div class="container">
+
+        <nav class="navbar navbar-expand-lg py-3">
+
+            <!-- Logo -->
+            <a class="navbar-brand" href="/">
+                <img src="/static/images/FH_logo_transparent.png" alt="Chowzter" height="55">
+            </a>
+
+            <!-- Mobile Toggle -->
+            <button class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+
+                <!-- Search -->
+                <div class="header-search mx-auto search-wrapper position-relative">
+                    <i class="bi bi-search"></i>
+                    <input
+                        type="text", id="search"
+                        class="form-control search-input"
+                        placeholder="Search restaurants, cuisines, dishes..."
+                    >
+                </div>
+                <div id="results"></div>
+
+                <!-- Menu -->
+                <ul class="navbar-nav align-items-center ms-lg-4">
+
+                    <li class="nav-item">
+                        <a class="nav-link1" href="{{ path('browse_cities') }}">
+                            Cities
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link1" href="{{ path('expert_list') }}">
+                            Experts
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link1" href="{{ path('features') }}">
+                            Blog
+                        </a>
+                    </li>
+                    {% if app.user %}
+                    
+                    <!-- Profile Dropdown -->
+                    <li class="nav-item dropdown ms-lg-3">
+
+                        <a class="nav-link1 dropdown-toggle user-menu"
+                           href="#"
+                           data-bs-toggle="dropdown">
+                           {% set profileImage = '/static/images/expert_icon.png' %}
+                           {% if app.user.userObject.Avatar %}
+                           {% set profileImage = app.user.userObject.Avatar.getThumbnail('expert-profile') %}
+                           {% endif %}
+                           
+                            <img src="{{ profileImage }}"
+                                 class="user-avatar"
+                                 alt="User">
+
+                            <span class="d-none d-md-inline">
+                                {% if  app.user.userObject.firstname  %}
+                                    {{ app.user.userObject.firstname }}
+                                {% else %}
+                                    Welcome User
+                                {% endif %}                               
+                                
+                            </span>
+
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end profile-dropdown">
+
+                            <li>
+                                <a class="dropdown-item" href="/profile">
+                                    <i class="bi bi-person"></i>
+                                    Profile
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-heart"></i>
+                                    Wishlist
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="#">
+                                    <i class="bi bi-star"></i>
+                                    Reviews
+                                </a>
+                            </li>
+
+                            <li><hr class="dropdown-divider"></li>
+
+                            <li>
+                                <a class="dropdown-item text-danger"
+                                   href="{{ path('frontend_logout') }}">
+                                    <i class="bi bi-box-arrow-right"></i>
+                                    Logout
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </li>
+                    {% else %}
+                    <!-- Login -->
+                    <li class="nav-item ms-lg-3">
+                        <a href="/login" class="btn btn-login">                            
+                            Sign In
+                        </a>
+                    </li>
+                        
+
+                    {% endif %}
+
+                </ul>
+
+            </div>
+
+        </nav>
+
+    </div>
+</header>

@@ -1,0 +1,9 @@
+{% extends '@PimcoreEmail/layout.html.twig' %}
+
+{% block subject %}
+    {{ pimcore_input('subject') }}
+{% endblock %}
+
+{% block content %}
+    {{ pimcore_wysiwyg('content') }}
+{% endblock %}

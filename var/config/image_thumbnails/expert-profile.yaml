@@ -1,0 +1,32 @@
+pimcore:
+    assets:
+        image:
+            thumbnails:
+                definitions:
+                    expert-profile:
+                        items:
+                            -
+                                method: resize
+                                arguments:
+                                    width: 400
+                                    height: 400
+                            -
+                                method: roundCorners
+                                arguments:
+                                    width: 5
+                                    height: 5
+                        medias: {  }
+                        name: expert-profile
+                        description: ''
+                        group: ''
+                        format: SOURCE
+                        quality: 85
+                        highResolution: null
+                        preserveColor: false
+                        forceProcessICCProfiles: false
+                        preserveMetaData: false
+                        rasterizeSVG: false
+                        downloadable: false
+                        modificationDate: 1766506469
+                        creationDate: 1766499437
+                        preserveAnimation: false

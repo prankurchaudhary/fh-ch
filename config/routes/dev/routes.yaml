@@ -1,0 +1,5 @@
+_pimcore_dev:
+    resource: "@PimcoreCoreBundle/config/routing_dev.yaml"
+
+nelmio_api_doc:
+    resource: ../nelmio_api_doc.yaml

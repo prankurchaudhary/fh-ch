@@ -1,0 +1,32 @@
+pimcore:
+    assets:
+        image:
+            thumbnails:
+                definitions:
+                    city-corousal:
+                        items:
+                            -
+                                method: scaleByWidth
+                                arguments:
+                                    width: 300
+                                    forceResize: false
+                            -
+                                method: roundCorners
+                                arguments:
+                                    width: 10
+                                    height: 10
+                        medias: {  }
+                        name: city-corousal
+                        description: ''
+                        group: ''
+                        format: SOURCE
+                        quality: 85
+                        highResolution: null
+                        preserveColor: false
+                        forceProcessICCProfiles: false
+                        preserveMetaData: false
+                        rasterizeSVG: false
+                        downloadable: false
+                        modificationDate: 1769229696
+                        creationDate: 1769229486
+                        preserveAnimation: false

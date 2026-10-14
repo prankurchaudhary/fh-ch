@@ -1,0 +1,154 @@
+{% extends "frontend/base.html.twig" %}
+{% block title %}Xtreme Foodies - The world's Essential Eats curated by local food experts{% endblock %}
+{% block cssblock %}{% endblock %}
+{% block body %}
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container hero-inner">
+    <p class="hero-sub">Curated by real local food expertsss </p>
+    <h1>Discover the best food spots<br/>across the world</h1>
+
+    <div class="hero-actions">
+      <a class="btn-primary" href="{{ path('browse_cities') }}">Explore Cities</a>
+      <a class="btn-outline" href="#">Become an Expert</a>
+    </div>
+  </div>
+</section>
+<section class="py-5 bg-light">
+    <div class="container">
+    <!-- Section Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">Cities</h2>
+      <a href="{{ path('browse_cities') }}" class="text-danger fw-semibold">View all cities →</a>
+    </div>
+
+    <div id="cityCarousel" class="carousel slide city-carousel" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% set placeholder = pimcore_asset(26) %}
+            {% for cityChunk in cities|batch(4) %}
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <div class="row g-0">
+
+                        {% for city in cityChunk %}
+                            <div class="col-md-3">
+                                <a href="{{ path('city_page', {
+                                    continentSlug: city.continent.slug,
+                                    citySlug: city.slug
+                                }) }}"
+                                   class="city-tile">
+                                    
+                                    {% if city.cityPhoto %}
+                                        <img src="{{ city.cityPhoto.getThumbnail('city-corousal') }}"
+                                             alt="{{ city.name }}">
+                                    {% else %}
+
+                                        <img src="{{ placeholder.thumbnail('city-corousal') }}" alt="{{ city.name }}">
+                                    {% endif %}
+                                    <div class="city-caption">
+                                        {{ city.name|upper }}
+                                    </div>
+
+                                </a>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button"
+                data-bs-target="#cityCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button"
+                data-bs-target="#cityCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+    </div>
+</section>
+<!-- WHY CHOWZTER -->
+<section class="section">
+  <div class="container why-grid">
+    <div class="why-item">
+      <h3>🌍 Local Experts</h3>
+      <p>Real food lovers who know their city inside out.</p>
+    </div>
+    <div class="why-item">
+      <h3>🍴 Curated Picks</h3>
+      <p>No paid listings. Only authentic recommendations.</p>
+    </div>
+    <div class="why-item">
+      <h3>⭐ Trusted Reviews</h3>
+      <p>Quality over quantity, always.</p>
+    </div>
+  </div>
+</section>
+
+
+
+{# Experts block  #}
+
+<section class="py-5">
+    <div class="container">
+     <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">Experts</h2>
+      <a href="{{ path('expert_list') }}" class="text-danger fw-semibold">View all experts →</a>
+    </div>
+
+    <div id="expertCarousel" class="carousel slide expert-carousel" data-bs-ride="carousel">
+        <div class="carousel-inner">
+            {% set placeholder = pimcore_asset(26) %}
+            {% for expertChunk in experts|batch(4) %}
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <div class="row g-0">
+
+                        {% for expert in expertChunk %}
+                            <div class="col-md-3">
+                                <a href="{{ path('expert_detail', { handle: expert.handle }) }}"
+                                   class="city-tile">
+                                    
+                                    {% if expert.avatar %}
+                                        <img src="{{ expert.avatar.getThumbnail('expert-profile') }}"
+                                             alt="{{ expert.firstname }}" width="200" height="200">
+                                    {% else %}
+
+                                        <img src="{{ placeholder.thumbnail('expert-profile') }}" alt="{{ expert.firstname }}">
+                                    {% endif %}
+                                    <div class="city-caption">
+                                        {{ expert.firstname|upper }} <br>
+                                        {% if expert.city %}
+                                        
+                                        <i>{{ expert.city.name }}</i>
+                                        {% endif %}
+                                    </div>
+
+                                </a>
+                            </div>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
+
+        <!-- Controls -->
+        <button class="carousel-control-prev" type="button"
+                data-bs-target="#expertCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon"></span>
+        </button>
+
+        <button class="carousel-control-next" type="button"
+                data-bs-target="#expertCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon"></span>
+        </button>
+    </div>
+    </div>
+</section>
+{% endblock %}

@@ -1,0 +1,86 @@
+{% extends 'frontend/layout.html.twig' %}
+
+{% block title %}500 – Something Went Wrong{% endblock %}
+{% block cssblock %}
+.food-500 {
+    #padding: 100px 20px;
+    text-align: center;
+}
+
+.food-500__emoji {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.food-500 h1 {
+    font-size: 96px;
+    margin-bottom: 10px;
+}
+
+.food-500 h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.food-500 p {
+    max-width: 520px;
+    margin: 0 auto 30px;
+    color: #666;
+}
+
+.food-500__actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.food-500__actions .btn {
+    padding: 12px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.food-500__note {
+    color: #777;
+    font-size: 14px;
+}
+{% endblock %}
+{% block body %}
+{% set emojis = ['🔥','🍳','🥘','🍲','🧯'] %}
+<section class="food-500">
+    <div class="container">
+        <div class="food-500__content">
+
+            <div class="food-500__emoji"> {{ random(emojis) }}</div>
+
+            <h1>500</h1>
+            <h2>Oops! The kitchen is on fire</h2>
+
+            <p>
+                Something went wrong while preparing your request.
+                Our chefs are already fixing the issue.
+                Please try again in a moment.
+            </p>
+
+            <div class="food-500__actions">
+                <a href="{{ path('frontend_home') }}" class="btn btn-primary">
+                    🏠 Back to Home
+                </a>
+
+                <button onclick="window.location.reload()" class="btn btn-outline">
+                    🔄 Try Again
+                </button>
+            </div>
+
+            <div class="food-500__note">
+                <small>
+                    If this keeps happening, please come back later —
+                    we promise it’ll be worth the wait 🍽️
+                </small>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

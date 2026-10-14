@@ -1,0 +1,16 @@
+_pimcore:
+    resource: "@PimcoreCoreBundle/config/routing.yaml"
+
+app:
+    resource: "../src/Controller/"
+    type: attribute
+
+nelmio_api_doc:
+    resource: routes/nelmio_api_doc.yaml
+
+api:
+    resource: "../src/Api/"
+    type: attribute
+
+#api_login_check:
+#    path: /api/v1/login

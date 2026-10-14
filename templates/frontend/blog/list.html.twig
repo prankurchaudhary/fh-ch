@@ -1,0 +1,114 @@
+{% extends "frontend/base.html.twig" %}
+
+{% block title %}Features
+	| Xtreme Foodies - The world's Essential Eats curated by local food experts
+{% endblock %}
+{% block cssblock %}
+.page-item {padding:5px;}
+.pagination .page-link {
+    border-radius: 6px;
+    padding: 6px 12px;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #dee2e6;
+    border-color: #dee2e6;
+    color: #000;
+}
+
+.pagination .page-link {
+    color: #333;
+}
+
+.pagination .page-link:hover {
+    background-color: #f1f1f1;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin: 40px 0;
+}
+
+.pagination ul {
+    display: flex;
+    gap: 10px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pagination li a {
+    padding: 6px 12px;
+    border: 1px solid #ddd;
+    text-decoration: none;
+}
+
+.pagination li.active a {
+    background: #ff3d3d;
+    color: #fff;
+    border-color: #ff3d3d;
+}
+
+{% endblock %}
+{% block body %}
+
+<section class="blog-list container">
+
+         <!-- Heading -->
+        <div class="text-center mb-4">
+            <h2 class="section-title">BLOGS</h2>
+            <hr class="w-25 mx-auto">
+            <p class="text-muted mt-3">
+                These are leading food writers in each of the cities highlighted around the world.
+            These talented writers and photographers are passionate about the food in their city
+            and are keen to make sure you try the tastiest fast feasts they offer.
+            Applications are welcome for open cities.
+            </p>
+        </div>
+
+    {% for blog in blogs %}
+        <article class="blog-list-item">
+
+            <div class="blog-thumb">
+                {% if blog.coverImage %}
+                    <a href="{{ path('blog_detail', { slug: blog.slug, blogType: blog.blogType }) }}">
+                        <img
+                            src="{{ blog.coverImage.getThumbnail('blog-cover') }}"
+                            alt="{{ blog.title }}"
+                            loading="lazy"
+                        >
+                    </a>
+                {% endif %}
+            </div>
+
+            <div class="blog-meta">
+
+                <h2 class="blog-title">
+                    <a href="{{ path('blog_detail', { slug: blog.slug, blogType: blog.blogType }) }}">
+                        {{ blog.title }}
+                    </a>
+                </h2>
+
+                <p class="blog-excerpt">
+                    {{ blog.blogIntro|striptags|slice(0, 480) }}…
+                </p>
+
+                <p class="blog-author">
+                    By {{ blog.author.firstname ?? 'Editorial Team' }}
+                    on {{ blog.publishedDate|date('F jS, Y') }}
+                </p>
+
+            </div>
+
+        </article>
+
+        <hr class="blog-divider">
+
+    {% endfor %}
+
+</section>
+
+{{ knp_pagination_render(blogs) }}
+
+{% endblock %}

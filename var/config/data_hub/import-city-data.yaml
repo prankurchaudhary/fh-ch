@@ -1,0 +1,93 @@
+pimcore_data_hub:
+    configurations:
+        import-city-data:
+            general:
+                active: true
+                type: dataImporterDataObject
+                name: import-city-data
+                description: ''
+                group: ''
+                path: null
+                modificationDate: 1767023909
+                createDate: 1766988060
+            loaderConfig:
+                type: upload
+                settings:
+                    uploadFilePath: import-city-data/upload.import
+            interpreterConfig:
+                type: csv
+                settings:
+                    skipFirstRow: true
+                    delimiter: ','
+                    enclosure: '"'
+                    escape: \
+            resolverConfig:
+                elementType: dataObject
+                dataObjectClassId: City
+                loadingStrategy:
+                    type: attribute
+                    settings:
+                        dataSourceIndex: '1'
+                        attributeName: slug
+                        language: ''
+                createLocationStrategy:
+                    type: staticPath
+                    settings:
+                        path: /Cities
+                locationUpdateStrategy:
+                    type: noChange
+                publishingStrategy:
+                    type: alwaysPublish
+            processingConfig:
+                executionType: sequential
+                idDataIndex: '1'
+                cleanup:
+                    strategy: delete
+            mappingConfig:
+                -
+                    label: Slug
+                    dataSourceIndex:
+                        - '1'
+                    transformationResultType: default
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: slug
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline: {  }
+                -
+                    label: Description
+                    dataSourceIndex:
+                        - '2'
+                    transformationResultType: default
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: description
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline: {  }
+                -
+                    label: name
+                    dataSourceIndex:
+                        - '0'
+                    transformationResultType: default
+                    dataTarget:
+                        type: direct
+                        settings:
+                            fieldName: name
+                            language: ''
+                            writeIfTargetIsNotEmpty: true
+                            writeIfSourceIsEmpty: true
+                    transformationPipeline: {  }
+            executionConfig:
+                scheduleType: job
+                cronDefinition: ''
+                scheduledAt: '29-12-2025 00:00'
+            permissions:
+                user: {  }
+                role: {  }
+            workspaces: {  }

@@ -1,0 +1,26 @@
+/* 1. Prevent the toolbar from jumping to the bottom or random screen positions */
+.tox-tinymce--toolbar-sticky-on .tox-editor-header {
+    position: sticky !important;
+    top: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    z-index: 100;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background: #fff !important;
+    transform: none !important; /* Prevents ExtJS transforms from moving it */
+}
+
+/* 2. Ensure the wrapper doesn't clip the toolbar or create a new scrolling context */
+.tox-tinymce {
+    overflow: visible !important;
+}
+
+.pimcore_tag_wysiwyg {
+    overflow: visible !important;
+}
+
+/* 3. Fix for Pimcore 11's specific panel structure */
+.x-panel-body-default {
+    overflow: auto !important;
+    contain: none !important; /* Some browsers use 'contain' which breaks sticky */
+}

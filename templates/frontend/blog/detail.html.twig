@@ -1,0 +1,90 @@
+{% extends "frontend/base.html.twig" %}
+
+{% block title %}Features
+	| Xtreme Foodies - The world's Essential Eats curated by local food experts
+{% endblock %}
+{% block cssblock %} 
+
+
+
+{% endblock %}
+{% block body %}
+	<div class="container py-5">
+<article class="blog-detail">
+
+    <h1>{{ blog.title }}</h1>
+
+    {% if blog.author %}
+        <p class="blog-author">
+            By <a href="{{ path('expert_detail', {handle: blog.author.handle}) }}">
+                {{ blog.author.firstname }}
+            </a>
+        </p>
+    {% endif %}
+
+    <div class="blog-content">
+        {{ blog.content
+            |replace({'<img': '<img loading="lazy"'})
+            |raw
+        }}
+    </div>
+
+    {% if blog.featuredRestaurants|length %}
+        <section class="featured-restaurants">
+            <h3>Featured Restaurants</h3>
+            <ul>
+                {% for restaurant in blog.featuredRestaurants %}
+                    <li>  
+                        <a href="{{ path('restaurant_detail', {continentSlug: restaurant.city.continent.slug, citySlug:restaurant.city.slug,  restaurantSlug: restaurant.slug, dish_slug:restaurant.dishSlug}) }}">
+                            {{ restaurant.name }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endif %}
+
+    {% if blog.recommendedPosts|length %}
+        <section class="recommended-posts">
+            <h3>Recommended Reads</h3>
+            <ul>
+                {% for post in blog.recommendedPosts %}
+                    <li>
+                        <a href="{{ path('blog_detail', {slug: post.slug}) }}">
+                            {{ post.title }}
+                        </a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endif %}
+
+    <div class="author-box">
+    <div class="author-header">Meet the author</div>
+
+    <div class="author-content">
+        <div class="author-avatar col-md-3">
+            <img src="https://www.xtremefoodies.com/sites/default/files//Jeffrey-profile_3.jpeg" alt="Author Image">
+        </div>
+
+        <div class="author-details col-md-9">
+            <div class="author-username">{{ blog.author.handle }}</div>
+
+            <p class="author-bio">
+               {% set bioText = blog.author.bio|striptags %}
+
+            <p class="author-bio">
+                {{ bioText|slice(0, 350) }}
+                {% if bioText|length > 350 %}
+                    … <a href="{{ path('expert_detail', {handle: blog.author.handle}) }}">More</a>
+                {% endif %}
+            </p>
+            </p>
+        </div>
+    </div>
+</div>
+
+
+</article>
+</div>
+{% endblock %}

@@ -1,0 +1,27 @@
+pimcore:
+    assets:
+        image:
+            thumbnails:
+                definitions:
+                    restaurant-photos-full:
+                        items:
+                            -
+                                method: scaleByHeight
+                                arguments:
+                                    height: 400
+                                    forceResize: true
+                        medias: {  }
+                        name: restaurant-photos-full
+                        description: ''
+                        group: ''
+                        format: SOURCE
+                        quality: 85
+                        highResolution: null
+                        preserveColor: false
+                        forceProcessICCProfiles: false
+                        preserveMetaData: false
+                        rasterizeSVG: false
+                        downloadable: false
+                        modificationDate: 1766684585
+                        creationDate: 1766499598
+                        preserveAnimation: false

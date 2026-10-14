@@ -1,0 +1,73 @@
+{% extends "frontend/base.html.twig" %}
+{% block cssblock %}
+    <style>
+        .profile-photo {
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+        }
+        .social-icons a {
+            margin-right: 10px;
+            font-size: 1.2rem;
+            color: #555;
+            text-decoration: none;
+        }
+        .social-icons a:hover {
+            color: #0d6efd;
+        }
+        .twitter-feed {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .bottom-section .card {
+            margin-bottom: 15px;
+        }
+{% endblock %}
+{% block body %}
+Profile here
+
+<div class="container my-5">
+    <div class="row">
+        <!-- Left Column: Profile Info -->
+        <div class="col-md-8">
+            <div class="d-flex align-items-center mb-3">
+                <img width="200" src="https://www.xtremefoodies.com/sites/default/files//bloggers-profile-photo/Michelin-Andy_Hayler.jpg" alt="Profile Photo" class="profile-photo me-3">
+                <div class="">
+                    <h4>John Doe</h4>
+                    <p class="text-muted">Blogger, writer, and storyteller. Sharing insights on tech and lifestyle.</p>
+                </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="social-icons mb-4">
+                <a href="https://twitter.com/johndoe" target="_blank"><i class="bi bi-twitter"></i> Twitter</a><br>
+                <a href="https://facebook.com/johndoe" target="_blank"><i class="bi bi-facebook"></i> Facebook</a><br>
+                <a href="https://instagram.com/johndoe" target="_blank"><i class="bi bi-instagram"></i> Instagram</a>
+            </div>
+
+            <!-- Bottom Section: Promotions / Books / Blogs -->
+            <div class="bottom-section">
+                <h5>Promotions / Books / Blogs</h5>
+                <div class="card p-3">Promotion or Book 1</div>
+                <div class="card p-3">Promotion or Book 2</div>
+                <div class="card p-3">Blog Post 1</div>
+            </div>
+        </div>
+
+        <!-- Right Column: Twitter Feed -->
+        <div class="col-md-4">
+            <h5>Twitter Feed</h5>
+            <div class="twitter-feed border p-3">
+                <!-- Placeholder tweets -->
+                <p><strong>@johndoe:</strong> Just published a new blog post about Bootstrap 5! <small class="text-muted">2h ago</small></p>
+                <p><strong>@johndoe:</strong> Exploring new design patterns in web development. <small class="text-muted">5h ago</small></p>
+                <p><strong>@johndoe:</strong> Check out my latest book on productivity. <small class="text-muted">1d ago</small></p>
+                <p><strong>@johndoe:</strong> Sharing some coding tips today. <small class="text-muted">2d ago</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

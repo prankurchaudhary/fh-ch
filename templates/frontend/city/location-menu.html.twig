@@ -1,0 +1,66 @@
+{% extends "frontend/base.html.twig" %}
+
+{% block title %}City list | Xtreme Foodies - The world's Essential Eats curated by local food experts{% endblock %}
+{% block cssblock %}
+
+{% endblock %}
+{% block body %}
+<section class="py-5">
+<div class="container">
+  <div class="text-center mb-4">
+            <h2 class="section-title">CITIES</h2>
+            <hr class="w-25 mx-auto">
+            
+        </div>
+
+<div style="margin-bottom: 150px;" class="accordion" id="continentAccordion">
+    {% for continent, countries in tree %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-{{ loop.index }}">
+                <button class="accordion-button collapsed continent-bg text-white" type="button" 
+                        data-bs-toggle="collapse" 
+                        data-bs-target="#collapse-{{ loop.index }}" 
+                        aria-expanded="false" 
+                        aria-controls="collapse-{{ loop.index }}">
+                    {{ continent }}
+                </button>
+            </h2>
+            <div id="collapse-{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="heading-{{ loop.index }}" data-bs-parent="#continentAccordion">
+                <div class="accordion-boody">
+                    <div class="accordion" id="countryAccordion-{{ loop.index }}">
+                        {% for country, cities in countries %}
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="countryHeading-{{ loop.parent.loop.index }}-{{ loop.index }}">
+                                    <button class="accordion-button collapsed bg-secondary text-white small" type="button" 
+                                            data-bs-toggle="collapse" 
+                                            data-bs-target="#countryCollapse-{{ loop.parent.loop.index }}-{{ loop.index }}" 
+                                            aria-expanded="false" 
+                                            aria-controls="countryCollapse-{{ loop.parent.loop.index }}-{{ loop.index }}">
+                                        {{ country }}
+                                    </button>
+                                </h2>
+                                <div id="countryCollapse-{{ loop.parent.loop.index }}-{{ loop.index }}" class="accordion-collapse collapse" aria-labelledby="countryHeading-{{ loop.parent.loop.index }}-{{ loop.index }}" data-bs-parent="#countryAccordion-{{ loop.parent.loop.index }}">
+                                    <div class="accordion-body p-2">
+                                        <ul class="list-group list-group-flush">
+                                            {% for city in cities %}
+                                                <li class="list-group-item">
+                                                    <a href="{{ path('city_page', { continentSlug:city.continent.slug, citySlug: city.slug }) }}">
+                                                        {{ city.name }}
+                                                    </a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+</section>
+
+
+{% endblock %}

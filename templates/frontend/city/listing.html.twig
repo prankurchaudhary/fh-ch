@@ -1,0 +1,346 @@
+{# templates/city/list.html.twig #}
+{% extends "frontend/base.html.twig" %}
+{% block title %}Restaurants in
+	{{ city.name }}
+	| Xtreme Foodies - The world's Essential Eats curated by local food experts
+{% endblock %}
+{% block cssblock %}
+  .wishlist-btn.wishlisted {
+    color: red;
+}
+{% endblock %}
+{% block body %}
+{% set visibleCount = 3 %}
+{% set expertCount = experts|length %}
+
+<!-- CITY HERO -->
+<section class="city-hero position-relative text-white">
+  <div class="container position-relative z-2 py-5">
+    <div class="row align-items-center">
+		{% if expertCount > 1 %}		
+      	<div class="">
+		{% else %}
+		<div class="col-lg-8">
+		{% endif %}
+        <h1 class="display-5 fw-bold">Best Restaurants in {{ city.name }}</h1>
+        <p class="lead">
+          {{ city.description | raw |striptags}}
+        </p>
+      </div>
+	  {% if experts and experts|length == 1 %}
+			{% for expert in experts %}
+      <div class="col-lg-4">
+        <div class="expert-card bg-white text-dark rounded p-3 d-flex align-items-center gap-3 shadow">
+			{% set avatar = expert.avatar ?: pimcore_asset(118) %}
+                        {% if avatar %}
+                            <img
+                                src="{{ avatar.thumbnail('expert-profile') }}"
+                                alt="{{ expert.handle }}"
+                                class="" width="120" class="rounded-circle"
+                            >
+                        {% endif %}	
+          <div>
+            <small class="text-muted">City Expert</small>
+            <div class="fw-semibold text-danger">{{ expert.handle }}</div>
+          </div>
+        </div>
+      </div>
+	  {% endfor %}
+	  {% elseif experts|length == 0 %}
+	   <div class="col-lg-4">
+        <div class="expert-card bg-white text-dark rounded p-3 d-flex align-items-center gap-3 shadow">
+			{% set avatar = pimcore_asset(118) %}
+                        
+                            <img
+                                src="{{ avatar.thumbnail('expert-profile') }}"
+                                alt=""
+                                class="" width="120" class="rounded-circle"
+                            >
+          <div>
+            <small class="text-muted">Interested in becoming our Food Expert? Click here</small>
+            <div class="fw-semibold text-danger"></div>
+          </div>
+        </div>
+      </div>
+
+
+	  {% endif %}
+    </div>
+  </div>
+</section>
+<div class="container my-5">
+<!--Experts if more than one in number-->
+{% if expertCount > 1 %}
+<div class="experts-section">
+    <h3 class="section-title">LOCAL EXPERTS</h3>
+
+    <div class="experts-carousel-wrapper">
+        
+        {% if expertCount > visibleCount %}
+            <button class="carousel-nav prev" onclick="slideExperts(-1)"><</button>
+        {% endif %}
+
+        <div class="experts-carousel" id="expertsCarousel"  {% if expertCount < visibleCount %} style="justify-content: center;" {% endif %} >
+            {% for expert in experts %}
+                <div class="expert-card">
+					{% set avatar = expert.avatar ?: pimcore_asset(118) %}
+                        {% if avatar %}
+                            <img
+                                src="{{ avatar.thumbnail('expert-profile') }}"
+                                alt="{{ expert.handle }}" width="250"
+                                
+                            >
+                        {% endif %}		
+                    
+                    <p class="expert-handle"><a href="{{ expert.handle }}" target="_blank">{{ expert.handle }}</a></p>
+                    <a href="{{ expert.handle }}" target="_blank" class="insta-icon"></a>
+                </div>
+            {% endfor %}
+			{% if expertCount > visibleCount %}	
+            <div class="expert-card view-team">
+                <a href="/experts">View<br>The<br>Team</a>
+            </div>
+			{% endif %}
+        </div>
+
+        {% if expertCount > visibleCount %}
+            <button class="carousel-nav next" onclick="slideExperts(1)">></button>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+</div>
+
+<!-- FILTER BAR -->
+<div class="bg-white shadow-sm sticky-top">
+  <div class="container py-3 d-flex gap-3 flex-wrap align-items-center">
+    <form method="get">
+    			<select name="category" onchange="this.form.submit()" class="form-select">
+					 <option value="all">All Categories</option>
+					{% if  categories is not empty %}
+					
+					{% for category in categories %}
+						<option value="{{ category.slug }}"
+							{{ category.slug == selectedCategory ? 'selected' : '' }}>
+							{{ category.categoryName }}
+						</option>
+					{% endfor %}
+
+					{% endif %}
+				</select>
+	</form>
+    <select class="form-select w-auto">
+      <option>Read a Feature</option>
+    </select>
+    <button class="btn btn-outline-danger ms-auto">
+      📍 Map View
+    </button>
+  </div>
+</div>
+<section class="container my-5">
+{% for item in items %}
+  <article class="restaurant-card bg-white rounded shadow-sm overflow-hidden mb-4">
+    <div class="row g-0">
+		<div class="col-md-5">
+			<div class="img-wrap">
+				{% set itemPhoto = item.itemPhotos|first %}
+				{% if itemPhoto %}
+
+					<img src="{{ itemPhoto.image.getThumbnail('restaurant-photos') }}" alt="{{ item.restaurant.name }}">
+					<p class="small fst-italic text-center mt-2">
+						Blah blah
+					</p>
+
+            {% else %}
+           {% set placeholderIds = [184,185,186,187,188] %}
+
+          {% set imageIndex = item.id % placeholderIds|length %}
+          {% set placeholder = pimcore_asset(placeholderIds[imageIndex]) %}
+          
+        
+          <img src="{{ placeholder.thumbnail('restaurant-photos')  }}" alt="{{ item.itemName }}">
+				{% endif %}
+			</div>
+		</div>
+
+      <div class="col-md-7 p-4">
+        <h3 class="text-danger fw-bold">
+			<a style="color: rgb(28, 30, 33); text-decoration: none;" href="/{{city.continent.slug}}/{{ city.slug }}/review/{{ item.restaurant.slug }}/{{item.slug}}">
+						{{ item.itemName }}
+					</a>
+		</h3>
+        <p class="fst-italic mb-1">{{ item.restaurant.name }}</p>
+        <small class="text-muted">
+          {{ item.restaurant.address }}
+        </small>
+
+        <div class="mt-3">
+          {% for tag in item.tags %}
+            <a href="{{ path('tag_restaurants', { slug: tag.slug }) }}"><span class="badge bg-success-subtle text-success">{{ tag.tagName }}</span></a>
+          {% endfor %}
+        </div>
+		
+		<div class="description-wrapper">
+        <p class="mt-3 text-muted">
+          {{item.description | raw}}
+        </p>
+		</div>
+		<div class="d-flex justify-content-between align-items-center mt-4">
+						{% if item.expert %}
+						
+						<a href="#" class="read-more text-danger fw-semibold text-decoration-none">
+							Reviewed by {{item.expert.handle }}
+						</a>
+						{% endif %}
+
+        <div class="d-flex align-items-center gap-3">
+          <a href="/{{city.continent.slug}}/{{ city.slug }}/review/{{ item.restaurant.slug }}/{{item.slug}}"" class="text-danger fw-semibold">Read more →</a>
+         <span class="text-danger fs-5">
+						<button
+							class="btn btn-sm btn-outline-secondary like-btn {{ item.restaurant.id in likedIds ? 'liked' : '' }}"
+							data-restaurant-id="{{ item.restaurant.id }}"
+						>
+						<span class="like-text">
+							{{ item.restaurant.id in likedIds ? '❤️ Liked' : '♡ Like'}}
+						</span>							
+						</button>
+					</span> 
+
+          {# Code for wish list #}
+          <span class="text-danger fs-5">
+						<button class="btn btn-sm btn-outline-secondary wishlist-btn {{ item.restaurant.id in wishlistIds ? 'wishlisted' : '' }} " data-restaurant-id="{{ item.restaurant.id }}">
+						<span class="wishlist-text">
+                        {{ item.restaurant.id in wishlistIds ? '❤️ Wishlisted' : '♡ Add to wishlist' }}
+						</span>							
+						</button>
+					</span>
+		 
+		 
+		  {# <button class="btn btn-sm btn-outline-secondary">♡ Like</button> #}
+        </div>
+      </div>
+    </div>
+  </article>
+{% endfor %}
+</section>
+
+
+
+{{ knp_pagination_render(items) }}
+
+{% endblock %}
+
+{% block javascripts %}
+ <script>
+let currentSlide = 0;
+
+function slideExperts(direction) {
+    const carousel = document.getElementById('expertsCarousel');
+    const cardWidth = carousel.children[0].offsetWidth + 20;
+
+    currentSlide += direction;
+    carousel.scrollLeft = currentSlide * cardWidth;
+}
+
+document.addEventListener('click', async function (e) {
+
+    const btn = e.target.closest('.like-btn');
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const restaurantId = btn.dataset.restaurantId;
+	console.log(restaurantId);
+    try {
+        const response = await fetch(`/restaurant/${restaurantId}/like`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            }
+        });
+		console.log(response);
+
+        if (response.status === 401) {
+			sessionStorage.setItem(
+                'after_login_redirect',
+                window.location.pathname + window.location.search
+            );
+
+            alert('Please login to like a restaurant');
+            window.location.href = '/login';
+            return;
+        }
+
+        const data = await response.json();
+
+        if (data.liked) {
+            btn.classList.add('liked');
+            btn.querySelector('.like-text').innerText = '❤️ Liked';
+			showToast('Restaurant liked ❤️', 'success');
+        } else {
+            btn.classList.remove('liked');
+            btn.querySelector('.like-text').innerText = '🤍 Like';
+			showToast('Like removed 💔', 'info');
+        }
+
+    } catch (error) {
+        console.error('Like failed', error);
+        //alert('Something went wrong. Please try again.');
+		showToast('Something went wrong', 'error');
+    }
+});
+
+// CODE FOR WISHLIST BUTTON
+
+document.addEventListener('click', async function (e) {
+
+    const btn = e.target.closest('.wishlist-btn');
+    if (!btn) return;
+
+    e.preventDefault();
+
+    const restaurantId = btn.dataset.restaurantId;
+	  console.log(restaurantId);
+    try {
+        const response = await fetch(`/restaurant/${restaurantId}/wishlist`, {
+            method: 'POST',
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'Content-Type': 'application/json'
+            }
+        });
+		console.log(response);
+
+        if (response.status === 401) {
+			  sessionStorage.setItem(
+                'after_login_redirect',
+                window.location.pathname + window.location.search
+            );
+
+            alert('Please login to wishlist a restaurant');
+            window.location.href = '/login';
+            return;
+        }
+
+        const data = await response.json();
+        console.log(data);
+        if (data.wishlisted) {
+            btn.classList.add('wishlisted');
+            btn.querySelector('.wishlist-text').innerText = '❤️ Wishlisted';
+			      showToast('Restaurant wishlisted ❤️', 'success');
+        } else {
+            btn.classList.remove('wishlisted');
+            btn.querySelector('.wishlist-text').innerText = '🤍 Add to Wishlist';
+			      showToast('Wishlist removed 💔', 'info');
+        }
+
+    } catch (error) {
+        console.error('wishlisted failed', error);
+        //alert('Something went wrong. Please try again.');
+		    showToast('Something went wrong', 'error');
+    }
+});
+</script>
+
+{% endblock %}

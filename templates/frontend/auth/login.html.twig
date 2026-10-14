@@ -1,0 +1,93 @@
+{% extends "frontend/base.html.twig" %}
+{% block title %}User account | Xtreme Foodies - The world's Essential Eats curated by local food experts{% endblock %}
+{% block cssblock %}
+
+
+{% endblock %}
+{% block body %}
+
+	<div class="container py-5">
+		<div
+			class="row h-100">
+
+			<!-- LEFT VISUAL -->
+			<div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center visual-panel">
+				<div class="visual-card text-center">
+					<img src="/static/images/fi_.png" alt="Food illustration">
+					<h2 class="fw-bold mt-4">
+						Real food.<br>
+						<span class="highlight">Real experts.</span>
+					</h2>
+					<p class="text-muted mt-2">
+						Trusted local recommendations, not paid ads.
+					</p>
+
+					<div class="d-flex justify-content-center gap-4 mt-4 small">
+						<div>
+							<strong>120+</strong><br>Cities</div>
+						<div>
+							<strong>800+</strong><br>Experts</div>
+						<div>
+							<strong>25k+</strong><br>Places</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- LOGIN -->
+			<div
+				class="col-lg-6 align-items-center justify-content-center">
+
+				<div class="regform" style="max-width: 475px; margin-top:100px; margin-bottom:100px;">
+					<h2 class="mb-4">LOGIN</h2>
+                    {% if error %}
+                            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData,'security') }}</div>
+                        {% endif %}
+                        {% for message in app.flashes('success') %}
+                            <div class="alert alert-success">{{ message }}</div>
+                        {% endfor %}
+                        {% for message in app.flashes('info') %}
+                            <div class="alert alert-info">{{ message }}</div>
+                        {% endfor %}
+
+                        {% for message in app.flashes('error') %}
+                            <div class="alert alert-danger">{{ message }}</div>
+                    {% endfor %}
+
+
+					<form action="{{ path('frontend_login') }}" method="post">
+						<input type="hidden" name="_redirect_after_login" value="" id="redirectAfterLogin">
+						<div class="mb-3">
+							<label>Email</label>
+							<input class="form-control" type="email" name="_username" value="{{ last_username }}"  required>
+						</div>
+						<div class="mb-3">
+							<label>Password</label>
+							<input class="form-control" type="password" name="_password" required>
+						</div>
+						<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+						<button class="btn btn-primary w-100 form-submit" type="submit">Login</button>
+					</form>
+
+
+					<div style=" margin-top:20px;padding-bottom:20px; text-align: left;">
+						<a style="font-size:14px;" href="{{path('frontend_register')}}" title="Create an account">Sign up</a>
+						|
+						<a style="font-size:14px;" href="{{path('frontend_forgot_password')}}" title="Reset your password">Forgot your password?</a>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.getElementById('redirectAfterLogin').value =
+    sessionStorage.getItem('after_login_redirect') || '';
+</script>
+
+
+{% endblock %}

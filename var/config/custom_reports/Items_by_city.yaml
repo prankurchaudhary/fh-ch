@@ -1,0 +1,48 @@
+pimcore_custom_reports:
+    definitions:
+        Items_by_city:
+            name: Items_by_city
+            sql: ''
+            dataSourceConfig:
+                -
+                    sql: "c.name AS city,\nCOUNT(i.oo_id) AS item_count\n\n"
+                    from: "object_query_Item i\nINNER JOIN object_query_City c ON c.oo_id = i.city__id"
+                    where: 'i.city__id IS NOT NULL'
+                    groupby: 'c.oo_id, c.name'
+                    orderby: item_count
+                    orderbydir: DESC
+                    type: sql
+            columnConfiguration:
+                -
+                    name: city
+                    display: true
+                    export: true
+                    order: true
+                    width: ''
+                    label: ''
+                    id: extModel356-5
+                -
+                    name: item_count
+                    display: true
+                    export: true
+                    order: true
+                    width: ''
+                    label: ''
+                    id: extModel356-6
+            niceName: 'Items By City'
+            group: ''
+            groupIconClass: ''
+            iconClass: ''
+            menuShortcut: true
+            reportClass: ''
+            chartType: bar
+            pieColumn: item_count
+            pieLabelColumn: city
+            xAxis: city
+            yAxis:
+                - item_count
+            modificationDate: 1791461356
+            creationDate: 1791459976
+            shareGlobally: true
+            sharedUserNames: {  }
+            sharedRoleNames: {  }

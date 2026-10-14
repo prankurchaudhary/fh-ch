@@ -1,0 +1,76 @@
+# remove the following ignores for your project
+/config/pimcore/constants.php
+!/config/pimcore/google-api-private-key.json.example
+
+# symfony default
+/.web-server-pid
+/config/pimcore/parameters.yml
+/build/
+/phpunit.xml
+/public/bundles/
+
+# local config
+/.env.local
+/.env.local.php
+/.env.*.local
+!/config/local
+/config/local/*
+!config/local/.gitkeep
+.env
+
+/var/*
+!/var/.gitkeep
+!/var/classes/
+
+!/var/config
+/var/config/system.yml
+/var/config/maintenance.php
+
+# project specific recommendations
+/var/config/tag-manager.php
+/var/config/reports.php
+
+
+/public/var/
+/public/sitemap*.xml
+
+# PHP-CS-Fixer
+/.php-cs-fixer.php
+/.php-cs-fixer.cache
+
+# composer
+/vendor/
+/node_modules/
+
+# PhpStorm / IDEA
+.idea
+# NetBeans
+nbproject
+
+# temp
+.temp
+
+
+# JWT private keys
+/config/jwt/private.pem
+/config/jwt/public.pem
+
+
+# DDEV generated/local files
+.ddev/.env
+
+# Logs and caches
+/var/log/
+/var/cache/
+
+# Local database dumps and backups
+*.sql
+*.sql.gz
+*.dump
+*.bak
+
+# IDE and OS files
+.idea/
+.vscode/
+.DS_Store
+/config/pimcore/google-api-private-key.json.example

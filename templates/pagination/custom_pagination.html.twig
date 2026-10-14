@@ -1,0 +1,81 @@
+<style>
+
+    .pagination-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin: 40px 0;
+    flex-wrap: wrap;
+}
+
+.pagination-number,
+.pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    min-width: 42px;
+    height: 42px;
+
+    padding: 0 16px;
+
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+
+    background: #fff;
+    color: #333;
+
+    text-decoration: none;
+    font-weight: 500;
+
+    transition: all .2s ease;
+}
+
+.pagination-number:hover,
+.pagination-btn:hover {
+    background: #f7f7f7;
+    border-color: #ccc;
+}
+
+.pagination-number.active {
+    background: #ff5a5f;
+    border-color: #ff5a5f;
+    color: #fff;
+}
+</style>
+
+{% if pageCount > 1 %}
+<nav class="pagination-wrapper">
+
+    {% if previous is defined %}
+        <a class="pagination-btn"
+           href="{{ path(route, query|merge({(pageParameterName): previous})) }}">
+            ← Previous
+        </a>
+    {% endif %}
+
+    {% for page in pagesInRange %}
+
+        {% if page == current %}
+            <span class="pagination-number active">
+                {{ page }}
+            </span>
+        {% else %}
+            <a class="pagination-number"
+               href="{{ path(route, query|merge({(pageParameterName): page})) }}">
+                {{ page }}
+            </a>
+        {% endif %}
+
+    {% endfor %}
+
+    {% if next is defined %}
+        <a class="pagination-btn"
+           href="{{ path(route, query|merge({(pageParameterName): next})) }}">
+            Next →
+        </a>
+    {% endif %}
+
+</nav>
+{% endif %}

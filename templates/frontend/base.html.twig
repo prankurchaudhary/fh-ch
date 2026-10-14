@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+
+		{% block stylesheets %}
+			<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+			<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+			<!-- Bootstrap Icons -->
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+			<link rel="stylesheet" href="/css/common.css">
+			<link rel="stylesheet" href="/css/style.css"/>
+			<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+		{% endblock %}
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>
+			{% block title %}{% endblock %}
+		</title>
+
+
+		<style>			
+			{% block cssblock %} {% endblock %}
+		</style>
+		<meta charset="UTF-8"/>
+
+	</head>
+	<body>
+		<div id="toast-container"></div>
+
+
+		{# Header #}
+		{% include 'frontend/components/header.html.twig' %}
+
+
+		{% block body %}{% endblock %}
+
+
+		{% include 'frontend/components/footer.html.twig' %}
+
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+		<script>
+			document.addEventListener('click', function (e) {
+			//const loginLink = e.target.closest('[data-login]');
+			const loginLink = e.target.closest('a[href="/login"]');
+			if (! loginLink) 
+			return;
+
+			// Store current page in sessionStorage
+			sessionStorage.setItem('after_login_redirect', window.location.pathname + window.location.search);
+			});
+					</script>
+					<script>
+						function showToast(message, type = 'success') {
+			const container = document.getElementById('toast-container');
+
+			const toast = document.createElement('div');
+			toast.className = `toast ${type}`;
+			toast.innerHTML = `
+						<span class="icon">${
+			type === 'success' ? '✅' : '❌'
+			}</span>
+						<span>${message}</span>
+					`;
+
+			container.appendChild(toast);
+
+			// Trigger animation
+			requestAnimationFrame(() => {
+			toast.classList.add('show');
+			});
+
+			// Auto remove
+			setTimeout(() => {
+			toast.classList.remove('show');
+			setTimeout(() => toast.remove(), 300);
+			}, 2500);
+			}
+		</script>
+		<script src="/js/search.js"></script>
+		{% block javascripts %}{% endblock %}
+
+	</body>
+</html>

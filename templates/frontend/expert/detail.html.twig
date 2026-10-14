@@ -1,0 +1,186 @@
+{# templates/restaurant/detail.html.twig #}
+{% extends "frontend/base.html.twig" %}
+{% block title %} {{expert.firstname}}
+	| Xtreme Foodies - The world's Essential Eats curated by local food experts
+{% endblock %}
+{% block cssblock %}
+
+
+
+{% endblock %}
+{% block body %}
+
+<div class="container expert-detail-page">
+
+    <!-- Back link -->
+    <div class="mb-4">
+        <a href="{{ path('expert_list') }}" class="text-danger text-decoration-none">
+            ← Back to experts
+        </a>
+    </div>
+
+    <!-- Top section -->
+    <div class="row mb-5">
+
+        <!-- Profile image -->
+        <div class="col-md-3">
+            {% if expert.avatar %}
+                <img
+                    src="{{ expert.avatar.thumbnail('expert-profile') }}"
+                    class="img-fluid expert-profile-image"
+                    alt="{{ expert.handle }}"
+                >
+            {% endif %}
+        </div>
+
+        <!-- Expert info -->
+        <div class="col-md-6">
+
+            <h1 class="expert-name-large">
+                {{ expert.handle }}
+                <hr>
+                 {{ expert.firstName }}
+            </h1>
+
+            {% if expert.instagram %}
+                <div class="expert-instagram mb-2">
+                    <i class="bi bi-instagram"></i>
+                    <a href="https://instagram.com/{{ expert.instagram }}"
+                       target="_blank"
+                       class="text-danger text-decoration-none">
+                        {{ expert.instagram }}
+                    </a>
+                </div>
+            {% endif %}
+
+            <!-- Cities -->
+            <div class="expert-cities mb-3">
+                {% for city in expert.city %}
+                    <span class="expert-city-pill">
+                        {{ city.name }} →
+                    </span>
+                {% endfor %}
+            </div>
+
+            <!-- Bio -->
+            <div class="expert-bio">
+                {{ expert.bio|raw }}
+            </div>
+        </div>
+
+        <!-- Social feed -->
+        <div class="col-md-3">
+            {% if expert.twitter %}
+                <h6 class="mb-2">Twitter</h6>
+                <div class="social-embed">
+                    {{ expert.twitter|raw }}
+                </div>
+            {% endif %}
+        </div>
+
+    </div>
+
+    <!-- Website promo -->
+    {# {% if expert.website %}
+        <div class="expert-promo-block mb-4">
+            <div class="row align-items-center">
+                <div class="col-md-2">
+                    {# {% if expert.websiteImage %}
+                        <img src="{{ expert.websiteImage.thumbnail('square_thumb') }}"
+                             class="img-fluid rounded">
+                    {% endif %}
+                </div>
+                <div class="col-md-8">
+                    <h5 class="text-danger">{{ expert.displayName }}</h5>
+                    <p>{{ expert.shortBio }}</p>
+                </div>
+                <div class="col-md-2 text-end">
+                    <a href="{{ expert.website }}"
+                       target="_blank"
+                       class="btn btn-secondary btn-sm">
+                        Visit Website
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %} #}
+
+    {# <!-- App promo -->
+    <div class="expert-promo-block mb-5">
+        <div class="row align-items-center">
+            <div class="col-md-2">
+                <img src="/static/images/app-promo.jpg" class="img-fluid rounded">
+            </div>
+            <div class="col-md-8">
+                <h5 class="text-danger">{{ expert.primaryCity.name }} Essential Eats</h5>
+                <p>
+                    Want to find the essential eats in {{ expert.primaryCity.name }} on the go?
+                    Download our app to discover the best places to eat.
+                </p>
+            </div>
+            <div class="col-md-2 text-end">
+                <a href="#" class="btn btn-secondary btn-sm">
+                    Download App Now
+                </a>
+            </div>
+        </div>
+    </div> #}
+
+    <!-- Reviews -->
+    <h4 class="mb-3">Contributed Reviews</h4>
+
+    <div class="restaurant-grid"> 
+        {% for item in expert.reviews %}
+            <a href="{{ path('restaurant_detail', {
+            continentSlug: item.city.continent.slug,
+            citySlug: item.city.slug,
+            restaurantSlug: item.restaurant.slug,
+            dish_slug: item.slug
+        }) }}"
+           class="restaurant-card-category">
+
+            <div class="restaurant-thumb">
+
+                {% set itemPhoto = item.itemPhotos|first %}
+				{% if itemPhoto %}
+                    <img
+                        src="{{ itemPhoto.image.getThumbnail('restaurant-photos') }}"
+                        alt="{{ restaurant.name }}"
+                    >
+                {% else %}
+                    {% set placeholderIds = [260,261,262,264,265] %}
+
+                    {% set imageIndex = item.id % placeholderIds|length %}
+                    {% set placeholder = pimcore_asset(placeholderIds[imageIndex]) %}
+                    
+                    <img src="{{ placeholder.thumbnail('restaurant-photos')  }}" alt="{{ item.itemName }}">
+                {% endif %}
+
+            </div>
+
+            <div class="restaurant-content">
+
+                <h3>
+                    {{ item.restaurant.name }}
+                </h3>
+
+                <h4>
+                    {{ item.ItemName }}
+                </h4>
+
+                <div class="restaurant-city">
+                    📍 {{ item.city.name }}
+                </div>
+
+            </div>
+
+        </a>
+        {% else %}
+            <p>No reviews yet.</p>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+{% endblock %}

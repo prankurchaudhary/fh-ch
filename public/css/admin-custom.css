@@ -1,0 +1,7 @@
+/* Sticky TinyMCE toolbar */
+.tox-editor-header {
+    position: sticky !important;
+    top: 60px;
+    z-index: 1000;
+    background: #fff;
+}

@@ -1,0 +1,13 @@
+# framework:
+#     session:
+#         name: PIMCORE_FRONTEND   # separate from PIMCORE_ADMIN
+framework:
+    session:
+        name: PIMCORE_FRONTEND
+        cookie_path: /
+        cookie_secure: auto
+        cookie_samesite: lax
+        cookie_lifetime: 28800
+    http_cache:
+        enabled: true
+

@@ -1,0 +1,308 @@
+{# templates/restaurant/detail.html.twig #}
+{% extends "frontend/base.html.twig" %}
+{% block title %}Restaurants in
+	{{ city.name }}
+	| Xtreme Foodies - The world's Essential Eats curated by local food experts
+{% endblock %}
+{% block cssblock %}
+
+	
+	.showcase {
+    border-top: 1px solid #e9e9e9;
+    border-bottom: 1px solid #e9e9e9;
+    margin-top: 1.125em;
+    padding: 0.3em 0;
+}
+
+{% endblock %}
+{% block body %}
+
+ {% set originBadge = pimcore_asset(244) %}
+  {% set expertPick = pimcore_asset(243) %}
+   {% set awardedBadge = pimcore_asset(242) %}
+	<section
+		class="container my-3">
+		<!-- Breadcrumb -->
+		<nav class="mb-1 text-muted">
+			<small class="text-muted"><a href="{{ path('city_page', { continentSlug:restaurant.city.continent.slug, citySlug: restaurant.city.slug }) }}" class="text-decoration-none black_link ">{{ restaurant.city.name }}</a></small>
+			<span class="mx-1">•</span>		
+			{% if item.getCategory() %}
+					<small class="text-muted"><a href="{{ path('category_restaurants', {slug:item.getCategory().slug} )}}" class="text-decoration-none black_link">{{item.getCategory().categoryName }}</a></small>
+			{% endif %}
+
+		</nav>
+		
+
+		<!-- Title -->
+		<h1 class="fw-bold mb-0">{{ restaurant.name }}</h1>
+		<p class="text-muted mb-2 dishName">{{ restaurant.dishName }}</p>
+		
+		{% if todaySchedule and not todaySchedule.isClosed.data %}
+		<span class="badge {{ isOpen ? 'bg-success' : 'bg-danger' }}">
+									{{ isOpen ? 'Open now' : 'Closed' }}
+								</span>
+								
+									{{ todaySchedule.day.data|capitalize }}:
+									{{ todaySchedule.openTime.data }}
+									-
+									{{ todaySchedule.closeTime.data }}						
+
+								
+							{% else %}
+								<strong>Closed today</strong>
+								<span class="ms-2 badge bg-danger">Closed</span>
+							{% endif %}
+
+		<!-- Tags -->
+		{% set badgeClasses = [
+			'bg-danger-subtle text-danger',
+			'bg-warning-subtle text-dark',
+			'bg-success-subtle text-success',
+			'bg-info-subtle text-info',
+			'bg-primary-subtle text-primary',
+			'bg-secondary-subtle text-dark'
+		] %}
+		<div class="mb-4">
+			{% for tag in item.tags %}
+				{% set badgeClass = random(badgeClasses) %}
+
+				<a href="{{ path('tag_restaurants', { slug: tag.slug }) }}"><span class="badge bg-success-subtle text-success">{{ tag.tagName }}</span></a>
+			{% endfor %}
+		</div>
+
+		<div
+			class="row">
+
+			<!-- LEFT CONTENT -->
+			<div class="col-lg-8">
+
+				{% if restaurant.restaurantPhotos is not empty %}
+					<div
+						id="restaurantPhotoCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+
+						<!-- Indicators -->
+						<div class="carousel-indicators">
+							{% for image in restaurant.restaurantPhotos %}
+								<button type="button" data-bs-target="#restaurantPhotoCarousel" data-bs-slide-to="{{ loop.index0 }}" class="{% if loop.first %}active{% endif %}" aria-current="{% if loop.first %}true{% endif %}" aria-label="Slide {{ loop.index }}"></button>
+							{% endfor %}
+						</div>
+
+						<!-- Slides -->
+						<div class="carousel-inner rounded">
+
+							{% for image in restaurant.restaurantPhotos %}
+								<div class="image-wrapper carousel-item {% if loop.first %}active{% endif %}">
+									<img src="{{ image.getThumbnail('restaurant-photos-full') }}" class="d-block w-100" alt="{{ restaurant.name }}">
+								</div>
+							{% endfor %}
+
+						</div>
+
+						<!-- Controls -->
+						<button class="carousel-control-prev" type="button" data-bs-target="#restaurantPhotoCarousel" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon"></span>
+						</button>
+
+						<button class="carousel-control-next" type="button" data-bs-target="#restaurantPhotoCarousel" data-bs-slide="next">
+							<span class="carousel-control-next-icon"></span>
+						</button>
+
+					</div>
+					{% else %}
+						   {% set placeholderIds = [184,185,186,187,188] %}
+
+						{% set imageIndex = restaurant.id % placeholderIds|length %}
+						{% set placeholder = pimcore_asset(placeholderIds[imageIndex]) %}
+						
+						<img src="{{ placeholder.thumbnail('restaurant-photos-full')  }}" class="d-block w-100" alt="{{ restaurant.name }}">
+				{% endif %}
+				{% if restaurant.essentialEats %}	
+				<div class="showcase usefulLinks">
+					{% for badges in restaurant.essentialEats %}
+					<span data-toggle="tooltip" data-placement="top" class="badge_desc" data-options="show_on:large" title="" data-original-title="This dish was invented or popularised here.">
+						<img style="height: 20px; padding-right:20px; " src="
+						{% if badges.essentialType.data == 'Awarded' %}
+						{{ awardedBadge.getThumbnail('badge') }}" title="{{awardedBadge.getMetadata('title')}}"	
+						{% elseif badges.essentialType.data =='Recommended' %}		
+						 {{ expertPick.getThumbnail('badge') }}" title="{{expertPick.getMetadata('title')}}"	
+						{% elseif badges.essentialType.data =='Origin' %}		
+						 {{ originBadge.getThumbnail('badge') }}" title="{{originBadge.getMetadata('title')}}"				
+						{% endif %}
+						>
+					</span>
+					
+					{% endfor %}
+				</div>
+				{% endif %}
+
+
+				<!-- Description -->
+				<div class="content mb-4 mt-2">
+					{{ item.description|raw }}
+				</div>
+
+				<!-- Video -->
+				{% if item.videoUrl and item.videoUrl != 'NULL' %}
+				<h5 class="fw-semibold mb-3">Watch the experience</h5>
+					<div class="ratio ratio-16x9 mb-4">
+						<iframe src="https://www.youtube.com/embed/{{ item.videoUrl|youtube_id }}" title="{{ item.itemName }}" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+					</div>
+				{% endif %}
+
+
+				<!-- Featured In -->
+				{# {% if restaurant.featuredImage %}
+												                <h6 class="fw-bold mt-4">Featured in</h6>
+												                <figure>
+												                    <img src="{{ restaurant.featuredImage.getThumbnail('featured') }}"
+												                         class="img-fluid rounded mb-1">
+												                    <figcaption class="small text-muted">
+												                        {{ restaurant.featuredTitle }}
+												                    </figcaption>
+												                </figure>
+												            {% endif %} #}
+
+			</div>
+
+			<!-- RIGHT SIDEBAR -->
+			<div class="col-lg-4">
+				<!-- EXPERT -->
+				{% if restaurant.expert %}
+				
+				<div class="card p-3 mb-3 hover-lift shadow-sm">
+					<div class="d-flex align-items-center gap-3">
+					<img src="{{ restaurant.expert.avatar.getThumbnail('expert-profile') }}" class="rounded-circle expert-img">
+					<div>
+						<small class="text-muted">Recommended by</small>
+						<div class="fw-semibold"><a class="black_link_no_td" href="{{ path('expert_detail', { handle: restaurant.expert.handle }) }}">{{ restaurant.expert.handle }}</a></div>
+						<small class="text-muted">Contributor</small>
+					</div>
+					</div>
+				</div>
+				{% endif %}
+
+				<!-- Location -->
+				<div class="card mb-4  shadow-sm">
+					<div class="card-body address_phone">
+						<h6 class="fw-bold">Location</h6>
+						<p class="small mb-2">{{ restaurant.address }}</p>
+						{% if restaurant.phone %}
+
+							<p class="text-danger fw-semibold mb-2" style="font-size: 24px;">
+								<i class="bi bi-telephone"></i>
+								{{ restaurant.phone }}
+							</p>
+						{% endif %}
+						<!-- Map -->
+						{% if restaurant.location %}
+
+							<div class="ratio ratio-4x3 mb-2">
+								<iframe src="https://www.google.com/maps?q={{ restaurant.location.latitude }},{{ restaurant.location.longitude }}&hl=en&z=16&output=embed" style="border:0;" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+							</div>
+						{% endif %}
+
+						{% if restaurant.website %}
+							<div style="margin-bottom: 20px; padding:10px;">
+								<a target="_blank" href="{{restaurant.website}}" class="LinkWithRedText">Visit Website</a>
+							</div>
+						{% endif %}
+
+					</div>
+
+				</div>
+
+				
+				<!--NEW OPENING HOURS-->
+                {% if restaurant.openingHours %}
+                
+				<div class="card border">
+					<div class="card-body opening-hours">
+
+						<div class="d-flex align-items-center mb-2">
+							<i style="font-size: 22px;" class="bi bi-clock me-2"></i>
+
+							{% if todaySchedule and not todaySchedule.isClosed.data %}
+								<strong>
+									{{ todaySchedule.day.data|capitalize }}:
+									{{ todaySchedule.openTime.data }}
+									-
+									{{ todaySchedule.closeTime.data }}
+								</strong>
+
+								<span class="ms-2 badge {{ isOpen ? 'bg-success' : 'bg-danger' }}">
+									{{ isOpen ? 'Open now' : 'Closed' }}
+								</span>
+							{% else %}
+								<strong>Closed today</strong>
+								<span class="ms-2 badge bg-danger">Closed</span>
+							{% endif %}
+						</div>
+
+						<a href="#openingHoursCollapse"
+                            class="text-danger small toggle-open"
+                            data-bs-toggle="collapse"
+                            role="button"
+                            aria-expanded="false">
+                                See More
+                            </a>
+
+						<div class="collapse mt-3" id="openingHoursCollapse">
+							{% for row in restaurant.openingHours %}
+								<div class="d-flex justify-content-between py-1 border-bottom">
+									<span class="fw-semibold">
+										{{ row.day.data|capitalize }}
+									</span>
+
+									{% if row.isClosed.data %}
+										<span class="text-danger">Closed</span>
+									{% else %}
+										<span>
+											{{ row.openTime.data }}
+											-
+											{{ row.closeTime.data }}
+										</span>
+									{% endif %}
+								</div>
+							{% endfor %}
+
+							{# SEE LESS (shown only when expanded) #}
+                            <a href="#openingHoursCollapse"
+                            class="text-danger small mt-2 d-inline-flex align-items-center toggle-close"
+                            data-bs-toggle="collapse"
+                            role="button">
+                                See Less
+                                <i class="bi bi-chevron-up ms-1"></i>
+                            </a>
+						</div>
+
+					</div>
+				</div>
+                {% endif %}
+				<!--CLSOED-->
+
+			</div>
+		</div>
+	</section>
+
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const collapseEl = document.getElementById('openingHoursCollapse');
+    const openLink = document.querySelector('.toggle-open');
+    const closeLink = document.querySelector('.toggle-close');
+
+    collapseEl.addEventListener('show.bs.collapse', function () {
+        openLink.style.display = 'none';
+    });
+
+    collapseEl.addEventListener('hide.bs.collapse', function () {
+        openLink.style.display = 'inline';
+    });
+});
+</script>
+
+{% endblock %}

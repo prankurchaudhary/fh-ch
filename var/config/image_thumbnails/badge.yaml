@@ -1,0 +1,27 @@
+pimcore:
+    assets:
+        image:
+            thumbnails:
+                definitions:
+                    badge:
+                        items:
+                            -
+                                method: scaleByWidth
+                                arguments:
+                                    width: 20
+                                    forceResize: false
+                        medias: {  }
+                        name: badge
+                        description: ''
+                        group: ''
+                        format: SOURCE
+                        quality: 85
+                        highResolution: null
+                        preserveColor: false
+                        forceProcessICCProfiles: false
+                        preserveMetaData: false
+                        rasterizeSVG: false
+                        downloadable: false
+                        modificationDate: 1767808900
+                        creationDate: 1767808839
+                        preserveAnimation: false

@@ -1,0 +1,48 @@
+pimcore_custom_reports:
+    definitions:
+        Items_by_category:
+            name: Items_by_category
+            sql: ''
+            dataSourceConfig:
+                -
+                    sql: "fc.categoryName AS category,\nCOUNT(i.oo_id) AS item_count"
+                    from: "object_query_Item i\nINNER JOIN object_query_FoodCategory fc\n    ON fc.oo_id = i.category__id"
+                    where: 'i.category__id IS NOT NULL'
+                    groupby: 'fc.oo_id, fc.categoryName'
+                    orderby: 'item_count DESC'
+                    orderbydir: null
+                    type: sql
+            columnConfiguration:
+                -
+                    name: category
+                    display: true
+                    export: true
+                    order: true
+                    width: ''
+                    label: ''
+                    id: extModel504-3
+                -
+                    name: item_count
+                    display: true
+                    export: true
+                    order: true
+                    width: ''
+                    label: ''
+                    id: extModel504-4
+            niceName: 'Items by Category'
+            group: ''
+            groupIconClass: ''
+            iconClass: ''
+            menuShortcut: true
+            reportClass: ''
+            chartType: pie
+            pieColumn: item_count
+            pieLabelColumn: category
+            xAxis: category
+            yAxis:
+                - item_count
+            modificationDate: 1791461692
+            creationDate: 1791461543
+            shareGlobally: true
+            sharedUserNames: {  }
+            sharedRoleNames: {  }

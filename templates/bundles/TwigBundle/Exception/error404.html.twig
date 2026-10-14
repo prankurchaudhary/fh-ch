@@ -1,0 +1,110 @@
+{% extends 'frontend/layout.html.twig' %}
+
+{% block title %}404 – Page Not Found{% endblock %}
+{% block cssblock %}
+.food-404 {
+    #padding: 100px 20px;
+    text-align: center;
+}
+
+.food-404__emoji {
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.food-404 h1 {
+    font-size: 96px;
+    margin-bottom: 10px;
+}
+
+.food-404 h2 {
+    font-size: 28px;
+    margin-bottom: 15px;
+}
+
+.food-404 p {
+    max-width: 520px;
+    margin: 0 auto 30px;
+    color: #666;
+}
+
+.food-404__actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.food-404__actions .btn {
+    padding: 12px 22px;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: #ff4d2d;
+    color: #fff;
+}
+
+.btn-outline {
+    border: 1px solid #ddd;
+    color: #333;
+}
+
+.food-404__suggestions h3 {
+    margin-bottom: 10px;
+}
+
+.food-404__suggestions ul {
+    list-style: none;
+    padding: 0;
+}
+
+.food-404__suggestions li {
+    margin: 6px 0;
+    color: #555;
+}
+
+
+{% endblock %}
+{% block body %}
+{% set emojis = ['🍕','🍔','🍜','🍩','🌮'] %}
+
+<section class="food-404">
+    <div class="container">
+        <div class="food-404__content">
+
+            <div class="food-404__emoji">{{ random(emojis) }}</div>
+
+            <h1>404</h1>
+            <h2>Oops! This dish is not on the menu</h2>
+
+            <p>
+                Looks like the page you’re craving doesn’t exist.
+                It might have been moved, removed, or never cooked at all.
+            </p>
+
+            <div class="food-404__actions">
+                <a href="{{ path('frontend_home') }}" class="btn btn-primary">
+                    🍽️ Explore Restaurants
+                </a>
+
+                <a href="{{ path('browse_cities') }}" class="btn btn-outline">
+                    🌍 Browse Cities
+                </a>
+            </div>
+
+            <div class="food-404__suggestions">
+                <h3>Popular Picks</h3>
+                <ul>
+                    <li>🍔 Best Burgers Near You</li>
+                    <li>🍣 Top Rated Sushi Places</li>
+                    <li>🍕 Trending Pizzerias</li>
+                    <li>🥗 Healthy & Vegan Eats</li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

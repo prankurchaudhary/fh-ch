@@ -1,0 +1,11 @@
+{% extends 'PimcoreEmail/layout.html.twig' %}
+<p style="color:red;">EMAIL TWIG LOADED</p>
+{% block content %}
+    <h2>Hello {{ user.name }}</h2>
+
+    <p>Welcome to Chowzter 🎉</p>
+
+    <p>
+        <a href="{{ verificationUrl }}">Verify your email</a>
+    </p>
+{% endblock %}

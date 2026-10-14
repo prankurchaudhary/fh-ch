@@ -1,0 +1,27 @@
+pimcore:
+    assets:
+        image:
+            thumbnails:
+                definitions:
+                    restaurant-photos:
+                        items:
+                            -
+                                method: resize
+                                arguments:
+                                    width: 500
+                                    height: 400
+                        medias: {  }
+                        name: restaurant-photos
+                        description: ''
+                        group: ''
+                        format: JPEG
+                        quality: 85
+                        highResolution: null
+                        preserveColor: false
+                        forceProcessICCProfiles: false
+                        preserveMetaData: false
+                        rasterizeSVG: false
+                        downloadable: false
+                        modificationDate: 1765988046
+                        creationDate: 1765988021
+                        preserveAnimation: false

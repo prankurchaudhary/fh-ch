@@ -1,0 +1,80 @@
+{# templates/restaurant/detail.html.twig #}
+{% extends "frontend/base.html.twig" %}
+{% block title %}Restaurants in
+	Category {{ category.categoryName }}
+	| Xtreme Foodies - The world's Essential Eats curated by local food experts
+{% endblock %}
+{% block cssblock %}
+{% endblock %}
+{% block body %}
+
+<section class="py-3"></section>
+<div class="container mb-5">
+
+    <div class="text-center mb-4">
+            <h2 class="section-title">Food Category - {{ category.categoryName |upper }} ({{ totalItems }})</h2>
+            <hr class="w-25 mx-auto">
+        </div>
+
+<div class="restaurant-grid">
+
+    {% for item in items %}
+        <a href="{{ path('restaurant_detail', {
+            continentSlug: item.city.continent.slug,
+            citySlug: item.city.slug,
+            restaurantSlug: item.restaurant.slug,
+            dish_slug: item.slug
+        }) }}"
+           class="restaurant-card-category">
+
+            <div class="restaurant-thumb">
+
+                {% set itemPhoto = item.itemPhotos|first %}
+				{% if itemPhoto %}
+                    <img
+                        src="{{ itemPhoto.image.getThumbnail('restaurant-photos') }}"
+                        alt="{{ restaurant.name }}"
+                    >
+                {% else %}
+                      {% set placeholderIds = [184,185,186,187,188] %}
+
+                    {% set imageIndex = item.id % placeholderIds|length %}
+                    {% set placeholder = pimcore_asset(placeholderIds[imageIndex]) %}
+                    
+                    <img src="{{ placeholder.thumbnail('restaurant-photos')  }}" alt="{{ item.itemName }}">
+                {% endif %}
+
+            </div>
+
+            <div class="restaurant-content">
+
+                <h3>
+                    {{ item.restaurant.name }}
+                </h3>
+
+                <h4>
+                    {{ item.ItemName }}
+                </h4>
+
+                <div class="restaurant-city">
+                    📍 {{ item.city.name }}
+                </div>
+
+            </div>
+
+        </a>
+
+    {% endfor %}
+
+</div>
+
+{{ knp_pagination_render(items) }}
+
+</div>
+</section>
+
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}

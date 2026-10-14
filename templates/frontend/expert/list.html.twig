@@ -1,0 +1,75 @@
+{# templates/restaurant/detail.html.twig #}
+{% extends "frontend/base.html.twig" %}
+{% block title %}Expert
+	| Xtreme Foodies - The world's Essential Eats curated by local food experts
+{% endblock %}
+{% block cssblock %}
+	
+
+{% endblock %}
+{% block body %}
+
+
+{# {% for expert in experts %}
+
+<pre>
+    {{ dump(expert) }}
+</pre>
+    
+{% endfor %} #}
+<section class="py-5">
+<div class="container">
+     <!-- Heading -->
+        <div class="text-center mb-4">
+            <h2 class="section-title">EXPERTS</h2>
+            <hr class="w-25 mx-auto">
+            <p class="text-muted mt-3">
+                These are leading food writers in each of the cities highlighted around the world.
+            These talented writers and photographers are passionate about the food in their city
+            and are keen to make sure you try the tastiest fast feasts they offer.
+            Applications are welcome for open cities.
+            </p>
+        </div>
+
+    <!-- Editorial Grid -->
+    <div class="row  g-4">        
+        {% for city in cities %}
+            {% set expert = city.expert %}
+            {% if expert %}
+
+                <div class="col-xl-3 col-lg-4 col-md-6">
+
+                    <a href="{{ path('expert_detail', { handle: expert.handle }) }}"
+                       class="text-decoration-none">
+                       
+                       <div class="overlay-card">
+                        {% set avatar = expert.avatar ?: pimcore_asset(118) %}
+
+                        {% if avatar %}
+                            <img
+                                src="{{ avatar.thumbnail('expert-profile') }}"
+                                alt="{{ expert.handle }}"
+                                class=""
+                            >
+                        {% endif %}
+                        <div class="overlay-content">
+                            <div class="overlay-text">
+                                <div class="expert-handle">{{ expert.handle }}</div>
+                                <div class="expert-city">{{ city.name }}</div>
+                            </div>
+                        </div>
+                       </div>
+                    </a>
+                </div>
+
+            {% endif %}
+        {% endfor %}
+
+    </div>
+</div>
+</section>
+
+
+
+
+{% endblock %}
